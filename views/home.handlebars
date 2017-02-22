@@ -7,8 +7,11 @@
 
 <div id="display-comments">
     {{#each articleObj.comments}}
-        <div class="user-name">{{this.name}}</div>
-        <div class="user-comment">{{this.comment}}</div>
+        <div id="comment-contain">
+            <div class="user-name">{{this.name}}</div>
+            <div class="user-comment" data-comment="{{this.comment}}">{{this.comment}}</div>
+            <button class="delete-comment" type="submit">Delete Comment</button>
+        </div>
     {{/each}}
 </div>
 

@@ -20,4 +20,23 @@ $(document).ready(() => {
         });
     })
 
+    $('.delete-comment').on('click', function(e) {
+        e.preventDefault();
+        let articleTitle = $('form').attr('data-title');
+        let deleteParent = $(this).parent();
+        let deleteComment = $(this).siblings('.user-comment').text();
+        deleteParent.remove();
+        $.ajax({
+            url: '/deletecomment',
+            type: 'DELETE',
+            data: {
+                title: articleTitle,
+                comment: deleteComment
+            },
+            success: function(result) {
+                // Do something with the result
+            }
+        });
+    })
+
 });
