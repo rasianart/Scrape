@@ -7,7 +7,12 @@ let Article = require('../mongoose/article.js');
 
 
 module.exports = (app) => {
+
     app.get("/", (req, res) => {
+        res.sendFile(path.join(__dirname + "/../public/index.html"));
+      });
+
+    app.get("/load", (req, res) => {
         request("https://www.hyperallergic.com", (error, response, html) => {
 
             var $ = cheerio.load(html);
@@ -64,7 +69,8 @@ module.exports = (app) => {
                         });
 
                         console.log(articleObj);
-                        res.render("home", {articleObj});
+                        res.send(articleObj);
+                        // res.render("home", {articleObj});
                     });
 
                     linkObj = {

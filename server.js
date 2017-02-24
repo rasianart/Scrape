@@ -9,6 +9,10 @@ var bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
 var mongoose = require('mongoose');
 
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+
 // Sets up the Express App
 // =============================================================
 var app = express();
@@ -21,10 +25,22 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 // Static directory
-app.use(express.static("./public"));
+// app.use(express.static("./public"));
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+const config = require('./webpack.dev.config.js');
+let compiler = webpack(config);
+
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+    stats: {colors: true}
+}));
+
+app.use(webpackHotMiddleware(compiler, {
+    log: console.log
+}));
+
+// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// app.set("view engine", "handlebars");
 
 // Routes =============================================================
 
